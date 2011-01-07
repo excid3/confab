@@ -5,10 +5,11 @@ var app = require('express').createServer(),
 
 require('jade');
 
-var opts = {server: "irc.quakenet.org",
-						channels: ["#teamliquid", "#tlpickup"],
-					  nick: "SimonR",
-						maxMsgs: 1000};
+var opts = {server: "irc.freenode.net",
+			channels: ["#keryx", "#excid3"],
+			nick: "dooooooooooooooooope",
+			maxMsgs: 1000};
+
 var ircMessages = [];
 var webClients = []; 
 var server = new irc({ server: opts.server, nick: opts.nick });
