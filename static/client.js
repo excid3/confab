@@ -77,12 +77,15 @@ function doPage()
 }
 
 $(document).ready(function() {
-	if("WebSocket" in window) {
+	$.getScript("socket.io.js", function() {
+		io.setPath( ( window.location.protocol == "https:" ? "https://" : "http://" ) + "commondatastorage.googleapis.com/client/WebSocketMainInsecure.swf" );
+		doPage();
+	});
+	/*if("WebSocket" in window) {
 		$.getScript('socket.io.js', function() {
 			doPage();
 		});
 	} else {
 		window.location = "error.html";	
-	}
-	
+	}*/
 });

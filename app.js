@@ -1,13 +1,13 @@
 var app = require('express').createServer(),
-		irc = require('./lib/IRC-js/lib/irc'),
-		io = require('./lib/Socket.IO-node'),
-		socket = io.listen(app);
+	irc = require('./lib/IRC-js/lib/irc'),
+	io = require('./lib/Socket.IO-node'),
+	socket = io.listen(app);
 
 require('jade');
 
 var opts = {server: "irc.freenode.net",
 			channels: ["#keryx", "#excid3"],
-			nick: "dooooooooooooooooope",
+			nick: "WebIRC",
 			maxMsgs: 1000};
 
 var ircMessages = [];
@@ -22,6 +22,16 @@ server.connect(function() {
 	}, 2000);
 });
 
+server.addListener('quit', function(msg) {
+	nick = msg.person.nick;
+	message = msg.params[0];
+
+	var data = {channel: chan, from:nick, msg:message};
+
+	console.log("IRC: Quit "+nick+":"+message+"\n");
+
+});
+
 server.addListener('privmsg', function(msg) {
 	nick = msg.person.nick;
 	chan = msg.params[0];
@@ -29,7 +39,7 @@ server.addListener('privmsg', function(msg) {
 
 	var data = {channel: chan, from:nick, msg:message};
 
-	console.log("IRC: "+msg.params[0]+" - "+msg.person.nick+":"+msg.params[1]+"\n");
+	console.log("IRC: "+chan+" - "+nick+":"+message+"\n");
 
 	for(i in opts.channels) {
 		if(chan == opts.channels[i]) {
@@ -48,11 +58,15 @@ server.addListener('privmsg', function(msg) {
 });
 
 socket.on('connection', function(client){
+
+	// Append new IRC viewer
 	webClients.push({session:client.sessionId,client:client});
 	console.log("got a client :: "+client.sessionId+" :: "+webClients.length);
 
+	// Send the channels and logs to the client
 	client.send({msgs:ircMessages,channels: opts.channels});
 
+	// When user disconnects, remove them
 	client.on('disconnect', function(){ 
 		for(i in webClients) {
 			if(webClients[i].session == client.sessionId)
