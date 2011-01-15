@@ -54,15 +54,6 @@ function createChannels(list)
 	}
 	$('#chat').append(str);
 
-	str += '<span>excid3</span>'
-	str += '<form id="new_message" action="/">';
-	str += '<input name="message" type="text">';
-	str += '</form>';
-
-	str += '</div>';
-
-	$('#footer').append(str);
-
 	/*$('#tabs').tabs({selected: 0, show: function() {
 		for(i in channelList)
 			scroll(i);

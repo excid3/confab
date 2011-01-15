@@ -71,12 +71,18 @@ html, body {
     -webkit-box-orient: horizontal;
     -moz-box-orient: horizontal;
 }
-#message input, #message span {
+#message span, #new_message {
     display: -webkit-box;
     display: -moz-box;
 }
-#message input {
+#message span {
+    -webkit-box-align: center;
+    -moz-box-align: center;
+}
+#new_message {
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
 }
-
+#new_message input {
+    width: ;
+}
