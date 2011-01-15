@@ -8,7 +8,7 @@ require('jade');
 
 var opts = {server: "irc.freenode.net",
 			channels: ["#excid3"],
-			nick: "WebIRC",
+			nick: "Confab",
 			maxMsgs: 1000};
 
 var ircMessages = [];
