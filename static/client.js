@@ -58,7 +58,7 @@ function createChannels(list)
 		for(i in channelList)
 			scroll(i);
 	}});*/
-	
+	$("input:first").focus();
 	$("#new_message").submit(function() {
 		var msg = $("input:first").val();
 		if (msg != "") {
