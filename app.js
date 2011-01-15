@@ -1,12 +1,13 @@
-var app = require('express').createServer(),
-	irc = require('./lib/IRC-js/lib/irc'),
-	io = require('./lib/Socket.IO-node'),
+var express = require('express'),
+	app = express.createServer(),
+	irc = require('irc-js'),
+	io = require('./socket.io'),
 	socket = io.listen(app);
 
 require('jade');
 
 var opts = {server: "irc.freenode.net",
-			channels: ["#keryx", "#excid3"],
+			channels: ["#excid3"],
 			nick: "WebIRC",
 			maxMsgs: 1000};
 
@@ -32,7 +33,9 @@ server.addListener('quit', function(msg) {
 
 });
 
-server.addListener('privmsg', function(msg) {
+server.addListener('privmsg', new_privmsg);
+
+function new_privmsg(msg) {
 	nick = msg.person.nick;
 	chan = msg.params[0];
 	message = msg.params[1];
@@ -55,7 +58,7 @@ server.addListener('privmsg', function(msg) {
 
 	if(ircMessages.length >= opts.maxMsgs) 
 		ircMessages = ircMessages.splice(0,1);
-});
+}
 
 socket.on('connection', function(client){
 
@@ -76,6 +79,10 @@ socket.on('connection', function(client){
 	});
 });
 
+
+
+// Here's our express server!
+app.use(express.bodyDecoder());
 app.set('view engine', 'jade');
 app.set('view options', {
 	    layout: false
@@ -86,5 +93,11 @@ app.get('/', function(req, res){
 });
 
 app.get('/*.*', function(req, res){res.sendfile("./static"+req.url);});
+
+app.post('/', function(req, res){
+	server.privmsg("#excid3", req.body.message);
+	new_privmsg({person: {nick: opts.nick}, params: ["#excid3", req.body.message]}); 
+	res.send();
+});
 
 app.listen(3000);

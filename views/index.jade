@@ -3,12 +3,19 @@ html(lang="en")
 	head
 		title WebIRC
 		<link rel="stylesheet" type="text/css" href="/style.css">
-		<link rel="stylesheet" type="text/css" href="/jquery-ui.css">
 		<script type="text/javascript" src="/jquery.js"></script>
-		<script type="text/javascript" src="/jquery-ui.js"></script>
 		<script type="text/javascript" src="/client.js"></script>
 	body
 		#container
-			h1 WebIRC
-			p
-				a(href="/chat") Join chat
+			#header
+				h1 WebIRC
+			#columns
+				#channels.sidebar
+					h2 Channels
+				#chatroom
+					#chat
+					#message
+						span Username
+						input(type="text")
+				#users.sidebar
+					h2 Users

@@ -38,26 +38,44 @@ function scroll(i)
 
 function createChannels(list) 
 {
-	str = '<div id="tabs"><ul>';
+	str = '<ul>';
 
 	for(i in list) {
-		str += '<li><a href="#tabs-'+i+'">'+list[i]+'</a></li>';
+		str += '<li><a href="#channel-'+i+'">'+list[i]+'</a></li>';
 	}
 
 	str += '</ul>';
+	$('#channels').append(str);
+
+	str = '';
 
 	for(i in list) {
 		str += '<div id="tabs-'+i+'"><div id="messages'+i+'" class="messages"></div></div>';
 	}
+	$('#chat').append(str);
+
+	str += '<span>excid3</span>'
+	str += '<form id="new_message" action="/">';
+	str += '<input name="message" type="text">';
+	str += '</form>';
 
 	str += '</div>';
 
-	$('body').append(str);
+	$('#footer').append(str);
 
-	$('#tabs').tabs({selected: 0, show: function() {
-		for(i in channelList) 
+	/*$('#tabs').tabs({selected: 0, show: function() {
+		for(i in channelList)
 			scroll(i);
-	}});
+	}});*/
+
+	$("#new_message").submit(function() {
+		var msg = $("input:first").val();
+		if (msg != "") {
+			$.post("/", $("#new_message").serialize());
+			$("#new_message")[0].reset();
+		}
+		return false;
+	});
 }
 
 function doPage() 
