@@ -86,6 +86,9 @@ socket.on('connection', function(client) {
 			console.log("ADDING USER :: "+user);
 		}
 	});
+	client.on('disconnect', function() {
+		console.log("remove this client "+this.sessionId);
+	});
 });
 	// Append new IRC viewer
 /*	webClients.push({session:client.sessionId,client:client});
