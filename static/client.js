@@ -73,7 +73,11 @@ function doPage()
 {
 	var socket = new io.Socket(null, {port: 3000});
 	socket.connect();
-	
+
+	socket.on('connect', function() {
+		socket.send(window.location.pathname);
+	});
+
 	socket.on('message', function(msg) {
 		if(msg.channels != null) {
 			channelList = msg.channels;				

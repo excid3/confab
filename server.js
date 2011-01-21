@@ -1,8 +1,11 @@
 var app = require("express").createServer(),
-    irc = require("./lib/IRC-js/lib/irc"),
-    io = require("./socket.io"),
+    irc = require("irc-js"),
+    io = require("socket.io"),
     socket = io.listen(app);
 
+server = new irc({server: "irc.freenode.net", nick: "excid3|bot"});
+server = new irc({server: "irc.freenode.net", nick: "something"});
+/*
 require("jade");
 
 app.set("view engine", "jade");
@@ -31,3 +34,4 @@ socket.on('connection', function(client){
     client.broadcast({ announcement: client.sessionId + ' disconnected' });
   });
 });
+*/

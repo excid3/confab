@@ -6,64 +6,89 @@ var express = require('express'),
 
 require('jade');
 
-var opts = {server: "irc.freenode.net",
-			channels: ["#excid3"],
-			nick: "Confabulous",
-			maxMsgs: 1000};
+var channels = ["#excid3"];
+var clients = [];
 
-var ircMessages = [];
-var webClients = []; 
-var server = new irc({ server: opts.server, nick: opts.nick });
+// Here's our express server!
+app.use(express.bodyDecoder());
+app.set('view engine', 'jade');
+app.set('view options', {
+	    layout: false
+});
 
-server.connect(function() {
+app.get('/*.*', function(req, res){res.sendfile("./static"+req.url);});
+
+app.get("/:user", function(req, res) {
+	if (!clients.hasOwnProperty(req.params.user)) {
+		var server = new irc({server: "irc.freenode.net", nick: req.params.user});
+		server.connect(connect);
+		server.addListener('privmsg', privmsg);
+		server.addListener('quit', quit);
+		server.messages = [];
+		server.web_clients = [];
+		server.channels = channels;
+		clients[req.params.user] = server;
+	}
+	res.render("index");
+});
+
+app.listen(3000);
+
+
+// IRC Client callbacks
+
+function connect() {
+	client = this;
 	setTimeout(function() {
-		for(i in opts.channels) {
-			server.join(opts.channels[i]);
+		for (i in channels) {
+			client.join(channels[i]);
 		}
 	}, 2000);
-});
+};
 
-server.addListener('quit', function(msg) {
-	nick = msg.person.nick;
-	message = msg.params[0];
+function quit(msg) {
+	console.log("IRC: Quit "+msg.person.nick+":"+msg.params[0]+"\n");
+}
 
-	var data = {channel: chan, from:nick, msg:message};
+function privmsg(msg) {
+	var client = this;
+	var nick = msg.person.nick;
+	var chan = msg.params[0];
+	var message = msg.params[1];
 
-	console.log("IRC: Quit "+nick+":"+message+"\n");
+	var data={channel: chan, from:nick, msg:message};
+	
+	for (i in client.channels) {
+		if (chan == client.channels[i]) {
+			client.messages.push(data);
 
-});
-
-server.addListener('privmsg', new_privmsg);
-
-function new_privmsg(msg) {
-	nick = msg.person.nick;
-	chan = msg.params[0];
-	message = msg.params[1];
-
-	var data = {channel: chan, from:nick, msg:message};
-
-	console.log("IRC: "+chan+" - "+nick+":"+message+"\n");
-
-	for(i in opts.channels) {
-		if(chan == opts.channels[i]) {
-			ircMessages.push(data);
-
-			if(webClients.length != 0) {
-				for(i in webClients) {
-						webClients[i].client.send(data);
-				}
+			if (client.web_clients.length != 0) {
+				for (i in client.web_clients)
+					client.web_clients[i].send(data);
 			}
 		}
 	}
 
-	if(ircMessages.length >= opts.maxMsgs) 
-		ircMessages = ircMessages.splice(0,1);
+	if (client.messages.length >= 1000)
+		client.messsages = client.messages.splice(0,1);
 }
 
-socket.on('connection', function(client){
 
+socket.on('connection', function(client) {
+	client.on('message', function(msg) {
+		var user = msg.substr(1);
+
+        if (clients.hasOwnProperty(user)) {
+			var irc = clients[user];
+			irc.web_clients.push(this);
+
+			client.send({msgs:irc.messages, channels:irc.channels});
+			console.log("ADDING USER :: "+user);
+		}
+	});
+});
 	// Append new IRC viewer
-	webClients.push({session:client.sessionId,client:client});
+/*	webClients.push({session:client.sessionId,client:client});
 	console.log("got a client :: "+client.sessionId+" :: "+webClients.length);
 
 	// Send the channels and logs to the client
@@ -80,24 +105,16 @@ socket.on('connection', function(client){
 });
 
 
-
-// Here's our express server!
-app.use(express.bodyDecoder());
-app.set('view engine', 'jade');
-app.set('view options', {
-	    layout: false
-});
+/*
 
 app.get('/', function(req, res){
 	res.render('index');	
 });
 
-app.get('/*.*', function(req, res){res.sendfile("./static"+req.url);});
 
-app.post('/', function(req, res){
+app.post('/:user', function(req, res){
 	server.privmsg("#excid3", req.body.message);
 	new_privmsg({person: {nick: opts.nick}, params: ["#excid3", req.body.message]}); 
 	res.send();
 });
-
-app.listen(3000);
+*/
