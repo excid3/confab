@@ -71,7 +71,7 @@ function createChannels(list)
 
 function doPage() 
 {
-	var socket = new io.Socket(null, {port: 3000});
+	var socket = new io.Socket(null, {port: 3000, transports:['websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling']});
 	socket.connect();
 
 	socket.on('connect', function() {
