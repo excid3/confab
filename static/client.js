@@ -62,7 +62,7 @@ function createChannels(list)
 	$("#new_message").submit(function() {
 		var msg = $("input:first").val();
 		if (msg != "") {
-			$.post("/", $("#new_message").serialize());
+			$.post(window.location.pathname, $("#new_message").serialize());
 			$("#new_message")[0].reset();
 		}
 		return false;

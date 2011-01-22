@@ -32,6 +32,15 @@ app.get("/:user", function(req, res) {
 	res.render("index");
 });
 
+app.post('/:user', function(req, res){
+	if (clients.hasOwnProperty(req.params.user)) {
+		var irc_client = clients[req.params.user];
+		irc_client.privmsg("#excid3", req.body.message);
+		privmsg.call(irc_client, {person: {nick: irc_client.options.nick}, params: ["#excid3", req.body.message]}); 
+		res.send();
+	}
+});
+
 app.listen(3000);
 
 
@@ -90,34 +99,4 @@ socket.on('connection', function(client) {
 		console.log("remove this client "+this.sessionId);
 	});
 });
-	// Append new IRC viewer
-/*	webClients.push({session:client.sessionId,client:client});
-	console.log("got a client :: "+client.sessionId+" :: "+webClients.length);
 
-	// Send the channels and logs to the client
-	client.send({msgs:ircMessages,channels: opts.channels});
-
-	// When user disconnects, remove them
-	client.on('disconnect', function(){ 
-		for(i in webClients) {
-			if(webClients[i].session == client.sessionId)
-				webClients.splice(i,1);
-		}
-		console.log("disconnect");
-	});
-});
-
-
-/*
-
-app.get('/', function(req, res){
-	res.render('index');	
-});
-
-
-app.post('/:user', function(req, res){
-	server.privmsg("#excid3", req.body.message);
-	new_privmsg({person: {nick: opts.nick}, params: ["#excid3", req.body.message]}); 
-	res.send();
-});
-*/
