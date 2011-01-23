@@ -6,7 +6,7 @@ var express = require('express'),
 
 require('jade');
 
-var channels = ["#excid3"];
+var channels = ["#keryx"];
 var clients = [];
 
 // Here's our express server!
@@ -29,14 +29,16 @@ app.get("/:user", function(req, res) {
 		server.channels = channels;
 		clients[req.params.user] = server;
 	}
-	res.render("index");
+	res.render("index", {
+		locals: {username: req.params.user}
+	});
 });
 
 app.post('/:user', function(req, res){
 	if (clients.hasOwnProperty(req.params.user)) {
 		var irc_client = clients[req.params.user];
-		irc_client.privmsg("#excid3", req.body.message);
-		privmsg.call(irc_client, {person: {nick: irc_client.options.nick}, params: ["#excid3", req.body.message]}); 
+		irc_client.privmsg("#keryx", req.body.message);
+		privmsg.call(irc_client, {person: {nick: irc_client.options.nick}, params: ["#keryx", req.body.message]}); 
 		res.send();
 	}
 });

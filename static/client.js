@@ -4,7 +4,7 @@ function update(msg)
 {
 	for(i in channelList) {
 		if(channelList[i] == msg.channel)
-			$("#messages"+i).append("&lt;"+msg.from+"&gt; "+scanMsg(msg.msg)+"<br/>");
+			$("#chat").append("&lt;"+msg.from+"&gt; "+scanMsg(msg.msg)+"<br/>");
 		
 		scroll(i);
 	}
@@ -16,7 +16,7 @@ function updateAll(list)
 	for(i in list) {
 		for(j in channelList) {
 			if(channelList[j] == list[i].channel)
-				$("#messages"+j).append("&lt;"+list[i].from+"&gt; "+scanMsg(list[i].msg)+"<br/>");
+				$("#chat").append("&lt;"+list[i].from+"&gt; "+scanMsg(list[i].msg)+"<br/>");
 		}
 	}
 
@@ -33,7 +33,7 @@ function scanMsg(msg)
 
 function scroll(i) 
 {
-	$("#messages"+i).scrollTop(9999999);
+	$("#chat").scrollTop(9999999);
 }
 
 function createChannels(list) 
@@ -41,7 +41,7 @@ function createChannels(list)
 	str = '<ul>';
 
 	for(i in list) {
-		str += '<li><a href="#channel-'+i+'">'+list[i]+'</a></li>';
+		str += '<li><a href="#">'+list[i]+'</a></li>';
 	}
 
 	str += '</ul>';
@@ -49,9 +49,9 @@ function createChannels(list)
 
 	str = '';
 
-	for(i in list) {
+	/*for(i in list) {
 		str += '<div id="tabs-'+i+'"><div id="messages'+i+'" class="messages"></div></div>';
-	}
+	}*/
 	$('#chat').append(str);
 
 	/*$('#tabs').tabs({selected: 0, show: function() {
@@ -94,4 +94,5 @@ $(document).ready(function() {
 		io.setPath( ( window.location.protocol == "https:" ? "https://" : "http://" ) + "commondatastorage.googleapis.com/client/WebSocketMainInsecure.swf" );
 		doPage();
 	});
+	$("input:first").focus();
 });
