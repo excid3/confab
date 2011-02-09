@@ -1,0 +1,60 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#header-content, #content, #message-content {
+    margin: 0 auto;
+    width: 960px;
+}
+#header, #channels, #chat {
+    margin: 0;
+    padding: 0;
+}
+
+#header {
+    background: #CCC;
+    position: fixed;
+    top: 0;
+    height: 47px;
+    width: 100%;
+}
+
+#header-content {
+    margin-bottom: 20px;
+}
+
+#content {
+    margin-top: 47px;
+    padding: 20px 0px;
+}
+#channels {
+    background: #BBB;
+    position: fixed;
+    top: 67;
+    width: 250px;
+}
+
+#chat {
+    background: #AAA;
+    float: right;
+    width: 700px;
+}
+
+#message {
+    background: #AAA;
+    position: fixed;
+    bottom: 0;
+    height: 100px;
+    width: 100%;
+}
+#message-content {
+    overflow: hidden;
+}
+#message-input {
+    float: right;
+    width: 700px;
+}
+#message-input input {
+    width: 100%;
+}

@@ -1,0 +1,44 @@
+<html>
+<head>
+  <title>Confab</title>
+  <link href="stylesheet.css" rel="stylesheet" media="screen" type="text/css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+</head>
+<body>
+
+<div id="header">
+  <div id="header-content">
+    CONFAB
+  </div>
+</div>
+
+<div id="content">
+  <div id="channels">
+    Channel List
+  </div>
+
+  <div id="chat">
+    Chat
+  </div>
+</div>
+
+<div id="message">
+  <div id="message-content">
+    <div id="message-input">
+      <input type="text">
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    window.onresize();
+  });
+
+  window.onresize = function(event) {
+    $("#chat").height($(window).height() - 100);
+  }
+</script>
+
+</body>
+</html>
