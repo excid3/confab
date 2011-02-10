@@ -3,8 +3,11 @@ var channelList = [];
 function update(msg) 
 {
 	for(i in channelList) {
-		if(channelList[i] == msg.channel)
-			$("#chat").append("&lt;"+msg.from+"&gt; "+scanMsg(msg.msg)+"<br/>");
+		if(channelList[i] == msg.channel) {
+			var li = $("<div />", {text: "<"+msg.from+"> "+scanMsg(msg.msg)});
+			$("#chat").append(li);
+
+		}
 		
 		scroll(i);
 	}
@@ -15,8 +18,10 @@ function updateAll(list)
 {
 	for(i in list) {
 		for(j in channelList) {
-			if(channelList[j] == list[i].channel)
-				$("#chat").append("&lt;"+list[i].from+"&gt; "+scanMsg(list[i].msg)+"<br/>");
+			if(channelList[j] == list[i].channel) {
+				var li = $("<div />", {text: "<"+list[i].from+"> "+scanMsg(list[i].msg)});
+				$("#chat").append(li);
+			}
 		}
 	}
 
@@ -59,12 +64,10 @@ function createChannels(list)
 			scroll(i);
 	}});*/
 	$("input:first").focus();
-	$("#new_message").submit(function() {
-		var msg = $("input:first").val();
-		if (msg != "") {
-			$.post(window.location.pathname, $("#new_message").serialize());
-			$("#new_message")[0].reset();
-		}
+	$("#message_form").submit(function() {
+		var msg = $(this).serialize();
+		$.post(window.location.pathname, msg.replace(/\+/g, " "));
+		$(this)[0].reset();
 		return false;
 	});
 }
@@ -74,9 +77,7 @@ function doPage()
 	var socket = new io.Socket();
 	socket.connect();
 
-	socket.on('connect', function() {
-		socket.send(window.location.pathname);
-	});
+	socket.on('connect', function() { socket.send(window.location.pathname); });
 
 	socket.on('message', function(msg) {
 		if(msg.channels != null) {
@@ -91,7 +92,6 @@ function doPage()
 
 $(document).ready(function() {
 	$.getScript("socket.io.js", function() {
-		io.setPath( ( window.location.protocol == "https:" ? "https://" : "http://" ) + "commondatastorage.googleapis.com/client/WebSocketMainInsecure.swf" );
 		doPage();
 	});
 	$("input:first").focus();

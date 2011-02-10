@@ -6,7 +6,7 @@ var express = require('express'),
 
 require('jade');
 
-var channels = ["#keryx"];
+var channels = ["#excid3"];
 var clients = [];
 
 // Here's our express server!
@@ -16,11 +16,12 @@ app.set('view options', {
 	    layout: false
 });
 
+app.get('/socket.io.js', function(req, res) {res.sendfile("./Socket.IO"+req.url);});
 app.get('/*.*', function(req, res){res.sendfile("./static"+req.url);});
 
 app.get("/:user", function(req, res) {
 	if (!clients.hasOwnProperty(req.params.user)) {
-		var server = new irc({server: "irc.freenode.net", nick: req.params.user});
+		var server = new irc({server: "irc.freenode.net", nick: req.params.user, log:false});
 		server.connect(connect);
 		server.addListener('privmsg', privmsg);
 		server.addListener('quit', quit);
@@ -37,8 +38,8 @@ app.get("/:user", function(req, res) {
 app.post('/:user', function(req, res){
 	if (clients.hasOwnProperty(req.params.user)) {
 		var irc_client = clients[req.params.user];
-		irc_client.privmsg("#keryx", req.body.message);
-		privmsg.call(irc_client, {person: {nick: irc_client.options.nick}, params: ["#keryx", req.body.message]}); 
+		irc_client.privmsg(channels[0], req.body.message);
+		privmsg.call(irc_client, {person: {nick: irc_client.options.nick}, params: [channels[0], req.body.message]}); 
 		res.send();
 	}
 });

@@ -38,6 +38,7 @@ body {
 #chat {
     background: #AAA;
     float: right;
+    list-style: none;
     width: 700px;
 }
 
