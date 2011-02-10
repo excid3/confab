@@ -1,16 +1,17 @@
 {
-    "name": "confab",
-    "version": "0.0.0",
-    "repository": {},
-    "directories": {
-        "lib": ""
-    }
-    "engines": {
-        "node": "*"
-    },
-    "dependencies": {
-        "express": "*",
-        "irc-js": "*",
-        "socket.io": "*"
-    }
+  "name": "confab",
+  "version": "0.0.0",
+  "repository": {},
+  "directories": {
+    "lib": ""
+  },
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "express": "*",
+    "irc-js": "*",
+    "socket.io": "*"
+  }
 }
+
