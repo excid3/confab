@@ -1,14 +1,43 @@
 var channelList = [];
 
-function update(msg) 
-{
-	for(i in channelList) {
-		if(channelList[i] == msg.channel) {
-			var li = $("<div />", {text: "<"+msg.from+"> "+scanMsg(msg.msg)});
-			$("#chat").append(li);
+function add_message(msg) {
+	var cmd = msg.command;
+	var text = '';
+	
+	if ( cmd === 'join' )
+		text = msg.person.nick + ' (' + msg.person.host + ') joined the channel.';
+	else if ( cmd === 'kick' )
+		text = msg.person.nick + ' kicked ' + msg.params[1] + ' from the channel. (' + msg.params[2] + ')';
+	else if ( cmd === 'mode' )
+		text = msg.person.nick + ' sets mode ' + msg.params[1] + ' ' + msg.params[2];
+	else if ( cmd === 'nick' )
+		text = msg.person.nick + ' is now known as ' + msg.params[0];
+	else if ( cmd === 'notice' )
+		text = '-' + msg.person.nick + '- ' + msg.params[1];
+	else if (cmd === 'part' )
+		text = msg.person.nick + ' (' + msg.person.host + ') left the channel. (' + msg.params[1] + ')';
+	else if ( cmd === 'privmsg' ) {
+		var action = msg.params[1].split( ' ');
+		if ( action[0] == '\u0001ACTION' )
+			text = '* ' + msg.person.nick + ' ' + action.slice( 1 ).join( ' ' );
+		else
+			text = '<' + msg.person.nick + '> ' + msg.params[1];
+	}
+	else if ( cmd === 'topic' )
+		text = msg.person.nick + ' has changed the topic to ' + msg.params[1];
+	else if ( cmd === 'quit' )
+		text = msg.person.nick + '(' + msg.person.host + ') left IRC. (' + msg.params[0] + ')';
+	else
+		text = msg;
 
-		}
-		
+	var d = new Date();
+	var li = $("<div />", {text: "["+d.getHours()+":"+d.getMinutes()+"] " + text});
+	$("#chat").append(li);
+}
+
+function update(msg) {
+	for(i in channelList) {
+		add_message(msg);
 		scroll(i);
 	}
 	
@@ -18,10 +47,7 @@ function updateAll(list)
 {
 	for(i in list) {
 		for(j in channelList) {
-			if(channelList[j] == list[i].channel) {
-				var li = $("<div />", {text: "<"+list[i].from+"> "+scanMsg(list[i].msg)});
-				$("#chat").append(li);
-			}
+			//add_message(list[i]);
 		}
 	}
 
