@@ -64,7 +64,7 @@ function scanMsg(msg)
 
 function scroll(i) 
 {
-	$("#chat").scrollTop(9999999);
+	$(window).scrollTop(9999999);
 }
 
 function createChannels(list) 

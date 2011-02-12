@@ -1,8 +1,15 @@
 body {
+    font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+    font-size: 11px;
     margin: 0;
     padding: 0;
 }
 
+h1 {
+    margin: 0;
+    padding: 0;
+    line-height: 47px;
+}
 #header-content, #content, #message-content {
     margin: 0 auto;
     width: 960px;
@@ -13,20 +20,19 @@ body {
 }
 
 #header {
-    background: #CCC;
+    background: #444;
+    color: white;
     position: fixed;
     top: 0;
     height: 47px;
     width: 100%;
 }
-
-#header-content {
-    margin-bottom: 20px;
-}
+#header-content { margin-bottom: 20px; }
 
 #content {
-    margin-top: 47px;
-    padding: 20px 0px;
+    margin: 47px auto 100px;
+    padding: 20px 0px 0px 0px;
+    overflow: hidden;
 }
 #channels {
     background: #BBB;
@@ -36,10 +42,13 @@ body {
 }
 
 #chat {
-    background: #AAA;
+    border: 1px solid #ccc;
     float: right;
     list-style: none;
     width: 700px;
+}
+#chat div {
+    padding: 5px;
 }
 
 #message {

@@ -2,21 +2,19 @@
 html(lang="en")
 	head
 		title Confab
-		<link rel="stylesheet" type="text/css" href="/style.css">
+		<link rel="stylesheet" type="text/css" href="/stylesheet.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 		<script type="text/javascript" src="/client.js"></script>
 	body
-		#container
-			#header
+		#header
+			#header-content
 				h1 Confab IRC Client
-			#columns
-				#channels.sidebar
-					h2 Channels
-				#chatroom
-					#chat
-					#message
-						span#username #{username}
-						form#message_form
-							input(id="new_message",type="text",name="message")
-				#users.sidebar
-					h2 Users
+		#content
+			#channels
+			ul(id="chat")
+
+		#message
+			#message-content
+				#message-input
+					form#message_form
+						input(name="message",type="text")

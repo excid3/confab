@@ -1,6 +1,6 @@
 var express = require('express'),
 	app = express.createServer(),
-	irc = require('irc-js'),
+	irc = require('../IRC-js/lib/irc.js'),
 	io = require('socket.io'),
 	socket = io.listen(app);
 
@@ -8,7 +8,7 @@ require('jade');
 
 var channels = ["#excid3"];
 var clients = [];
-var irc_events = ['action', 'join', 'kick', 'mode', 'nick', 'notice', 'part', 'privmsg', 'topic', 'quit'];
+var irc_events = ['join', 'kick', 'mode', 'nick', 'notice', 'part', 'privmsg', 'topic', 'quit'];
 
 // Here's our express server!
 app.use(express.bodyDecoder());
@@ -58,19 +58,17 @@ function connect() {
 };
 
 function push_event(msg) {
-    var client = this
-    console.log(msg)
-    for (i in client.channels) {
-	client.messages.push(msg);
+    for (i in this.channels) {
+	this.messages.push(msg);
 
-	if (client.web_clients.length != 0) {
-	    for (i in client.web_clients)
-		client.web_clients[i].send(msg);
+	if (this.web_clients.length != 0) {
+	    for (i in this.web_clients)
+		this.web_clients[i].send(msg);
 	}
     }
 
-    if (client.messages.length >= 1000)
-	client.messsages = client.messages.splice(0,1);
+    if (this.messages.length >= 1000)
+	this.messsages = this.messages.splice(0,1);
 }
 
 
