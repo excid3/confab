@@ -20,24 +20,22 @@ app.get('/*.*', function(req, res){res.sendfile("./static"+req.url);});
 
 app.get("/:user", function(req, res) {
     if (!clients.hasOwnProperty(req.params.user)) {
-	var server = new irc({server: "irc.freenode.net", nick: req.params.user});
-	server.connect(connect);
-	irc_events.forEach(function(e) { server.addListener(e, push_event) });
-	server.messages = [];
-	server.web_clients = [];
-	server.channels = channels;
-	clients[req.params.user] = server;
+		var server = new irc({server: "irc.freenode.net", nick: req.params.user});
+		server.connect(connect);
+		irc_events.forEach(function(e) { server.addListener(e, push_event) });
+		server.messages = [];
+		server.web_clients = [];
+		server.channels = channels;
+		clients[req.params.user] = server;
     }
-    res.render("index", {
-	locals: {username: req.params.user}
-    });
+    res.render("index", { locals: {username: req.params.user} });
 });
 
 app.post('/:user', function(req, res){
     if (clients.hasOwnProperty(req.params.user)) {
-	var irc_client = clients[req.params.user];
-	irc_client.privmsg(channels[0], req.body.message);
-	res.send();
+		var irc_client = clients[req.params.user];
+		irc_client.privmsg(channels[0], req.body.message);
+		res.send();
     }
 });
 
@@ -48,24 +46,23 @@ app.listen(3000);
 function connect() {
     client = this;
     setTimeout(function() {
-	for (i in channels) {
-	    client.join(channels[i]);
-	}
+		for (i in channels) 
+		    client.join(channels[i]);
     }, 2000);
 };
 
 function push_event(msg) {
     for (i in this.channels) {
-	this.messages.push(msg);
+		this.messages.push(msg);
 
-	if (this.web_clients.length != 0) {
-	    for (i in this.web_clients)
-		this.web_clients[i].send(msg);
-	}
+		if (this.web_clients.length != 0) {
+			for (i in this.web_clients)
+				this.web_clients[i].send(msg);
+		}
     }
 
     if (this.messages.length >= 1000)
-	this.messsages = this.messages.splice(0,1);
+		this.messsages = this.messages.splice(0,1);
 }
 
 
