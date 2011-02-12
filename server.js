@@ -13,9 +13,7 @@ var irc_events = ['join', 'kick', 'mode', 'nick', 'notice', 'part', 'privmsg', '
 // Here's our express server!
 app.use(express.bodyDecoder());
 app.set('view engine', 'jade');
-app.set('view options', {
-	    layout: false
-});
+app.set('view options', { layout: false });
 
 app.get('/socket.io.js', function(req, res) {res.sendfile("./Socket.IO"+req.url);});
 app.get('/*.*', function(req, res){res.sendfile("./static"+req.url);});
@@ -44,7 +42,6 @@ app.post('/:user', function(req, res){
 });
 
 app.listen(3000);
-
 
 // IRC Client callbacks
 

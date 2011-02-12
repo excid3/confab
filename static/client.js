@@ -80,15 +80,8 @@ function createChannels(list)
 
 	str = '';
 
-	/*for(i in list) {
-		str += '<div id="tabs-'+i+'"><div id="messages'+i+'" class="messages"></div></div>';
-	}*/
 	$('#chat').append(str);
 
-	/*$('#tabs').tabs({selected: 0, show: function() {
-		for(i in channelList)
-			scroll(i);
-	}});*/
 	$("input:first").focus();
 	$("#message_form").submit(function() {
 		var msg = $(this).serialize();
