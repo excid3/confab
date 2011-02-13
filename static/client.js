@@ -33,7 +33,7 @@ function add_message(msg) {
 
 	if ( text ) {
 		var d = new Date();
-		var li = $("<div />", {text: "["+d.getHours()+":"+d.getMinutes()+"] " + text});
+		var li = $("<div />", {text: "["+d.getHours()+":"+d.getMinutes()+"] " + text, 'class': cmd});
 		$("#chat").append(li);
 	}
 }

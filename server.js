@@ -1,12 +1,12 @@
 var express = require('express'),
 	app = express.createServer(),
-	irc = require('../IRC-js/lib/irc.js'),
+	irc = require('lib/IRC-js/lib/irc.js'),
 	io = require('socket.io'),
 	socket = io.listen(app);
 
 require('jade');
 
-var channels = ["#excid3"];
+var channels = ["#keryx"];
 var clients = [];
 var irc_events = ['join', 'kick', 'mode', 'nick', 'notice', 'part', 'privmsg', 'topic', 'quit'];
 
@@ -15,7 +15,7 @@ app.use(express.bodyDecoder());
 app.set('view engine', 'jade');
 app.set('view options', { layout: false });
 
-app.get('/socket.io.js', function(req, res) {res.sendfile("./Socket.IO"+req.url);});
+//app.get('/socket.io.js', function(req, res) {res.sendfile("./Socket.IO"+req.url);});
 app.get('/*.*', function(req, res){res.sendfile("./static"+req.url);});
 
 app.get("/:user", function(req, res) {

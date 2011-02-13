@@ -68,3 +68,7 @@ h1 {
 #message-input input {
     width: 100%;
 }
+
+.notice {
+    background-color: #F22;
+}
