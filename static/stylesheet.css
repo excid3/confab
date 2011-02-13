@@ -72,3 +72,7 @@ h1 {
 .notice {
     background-color: #F22;
 }
+
+.join, .part, .quit {
+    color: #AAA;
+}
