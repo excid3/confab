@@ -1,8 +1,8 @@
 var express = require( 'express' ) ,
 	irc = require( './lib/IRC-js/lib/irc.js' ),
 	io = require( 'socket.io' ),
-	require( 'jade' ),
-	app = express.createServer() ,
+	jade = require( 'jade' ),
+	app = express.createServer(),
 	socket = io.listen(app);
 
 
