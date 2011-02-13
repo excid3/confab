@@ -1,6 +1,6 @@
 var express = require('express'),
 	app = express.createServer(),
-	irc = require('lib/IRC-js/lib/irc.js'),
+	irc = require('./lib/IRC-js/lib/irc.js'),
 	io = require('socket.io'),
 	socket = io.listen(app);
 
